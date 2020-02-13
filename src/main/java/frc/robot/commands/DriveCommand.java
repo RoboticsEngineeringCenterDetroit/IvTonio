@@ -14,12 +14,12 @@ public class DriveCommand extends Command {
 
     @Override
     protected void execute() {
-        double forward = -Robot.oi.driveController.getY();
+        double forward = -Robot.oi.driveController.getRawAxis(1);
         forward = Utilities.deadband(forward);
         // Square the forward stick
         forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = -Robot.oi.driveController.getX();
+        double strafe = -Robot.oi.driveController.getRawAxis(0);
         strafe = Utilities.deadband(strafe);
         // Square the strafe stick
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);

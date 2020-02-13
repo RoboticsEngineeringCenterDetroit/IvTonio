@@ -35,38 +35,38 @@ import org.frcteam2910.common.robot.drivers.Mk2SwerveModuleBuilder;
  */
 public class DriveTrain extends Subsystem {
 
-    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 2; // CAN
+    public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR = 4; // CAN
     public static final int DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER = 0; // Analog
-    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 1; // CAN
+    public static final int DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR = 17; // CAN
 
-    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 4; // CAN
+    public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR = 5; // CAN
     public static final int DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER = 1; // Analog
-    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 3; // CAN
+    public static final int DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR = 1; // CAN
 
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR = 6; // CAN
     public static final int DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER = 2; // Analog
-    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 5; // CAN
+    public static final int DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR = 2; // CAN
 
-    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 8; // CAN
+    public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR = 7; // CAN
     public static final int DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER = 3; // Analog
-    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 7; // CAN
+    public static final int DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR = 3; // CAN
 
-    private static final double TRACKWIDTH = 19.5; //inches
-    private static final double WHEELBASE = 23.5;
+    private static final double TRACKWIDTH = 18; //inches
+    private static final double WHEELBASE = 28.25;
 
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(0.0);
+    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(283.2);
     private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(0.0);
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(0.0);
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(0.0);
+    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(204.0);
+    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(317.8);
 
-    private CANSparkMax rightFrontDriveMotor;
-    private CANSparkMax rightFrontRotateMotor;
-    private CANSparkMax leftFrontDriveMotor;
-    private CANSparkMax leftFrontRotateMotor;
-    private CANSparkMax rightBackDriveMotor;
-    private CANSparkMax rightBackRotateMotor;
-    private CANSparkMax leftBackDriveMotor;
-    private CANSparkMax leftBackRotateMotor;
+    public CANSparkMax rightFrontDriveMotor;
+    public CANSparkMax rightFrontRotateMotor;
+    public CANSparkMax leftFrontDriveMotor;
+    public CANSparkMax leftFrontRotateMotor;
+    public CANSparkMax rightBackDriveMotor;
+    public CANSparkMax rightBackRotateMotor;
+    public CANSparkMax leftBackDriveMotor;
+    public CANSparkMax leftBackRotateMotor;
     private final SwerveModule frontLeftModule;
     private final SwerveModule frontRightModule;
     private final SwerveModule backLeftModule;
