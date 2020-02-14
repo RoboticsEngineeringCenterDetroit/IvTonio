@@ -1,7 +1,6 @@
 package frc.robot.commands;
 
 import frc.robot.Robot;
-import frc.robot.subsystems.DriveTrain;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
 import org.frcteam2910.common.robot.Utilities;
@@ -29,7 +28,7 @@ public class DriveCommand extends Command {
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
-        Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, true);
+        Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
     }
 
     @Override

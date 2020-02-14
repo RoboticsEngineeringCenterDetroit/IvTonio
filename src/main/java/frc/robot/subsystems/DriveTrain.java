@@ -74,14 +74,14 @@ public class DriveTrain extends Subsystem {
     private final SwerveDriveKinematics kinematics;
 
 public DriveTrain() {
-        rightFrontDriveMotor = new CANSparkMax(0, CANSparkMax.MotorType.kBrushless);
-        rightFrontRotateMotor = new CANSparkMax(1, CANSparkMax.MotorType.kBrushless);
-        leftFrontDriveMotor = new CANSparkMax(2, CANSparkMax.MotorType.kBrushless);
-        leftFrontRotateMotor = new CANSparkMax(3, CANSparkMax.MotorType.kBrushless);
-        rightBackDriveMotor = new CANSparkMax(4, CANSparkMax.MotorType.kBrushless);
-        rightBackRotateMotor = new CANSparkMax(5, CANSparkMax.MotorType.kBrushless);
-        leftBackDriveMotor = new CANSparkMax(6, CANSparkMax.MotorType.kBrushless);
-        leftBackRotateMotor = new CANSparkMax(7, CANSparkMax.MotorType.kBrushless);
+        rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        rightFrontRotateMotor = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        leftFrontDriveMotor   = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        leftFrontRotateMotor  = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, CANSparkMax.MotorType.kBrushless);
+        rightBackDriveMotor   = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        rightBackRotateMotor  = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        leftBackDriveMotor    = new CANSparkMax(DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        leftBackRotateMotor   = new CANSparkMax(DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
 
         frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
