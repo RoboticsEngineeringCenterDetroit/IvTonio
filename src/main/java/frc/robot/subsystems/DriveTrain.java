@@ -54,10 +54,10 @@ public class DriveTrain extends Subsystem {
     private static final double TRACKWIDTH = 18; //inches
     private static final double WHEELBASE = 28.25;
 
-    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(283.2);
-    private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(0.0);
-    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(204.0);
-    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(317.8);
+    private static final double FRONT_LEFT_ANGLE_OFFSET = -Math.toRadians(102.2);
+    private static final double FRONT_RIGHT_ANGLE_OFFSET = -Math.toRadians(282.2);
+    private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(202.9);
+    private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(138.2);
 
     public CANSparkMax rightFrontDriveMotor;
     public CANSparkMax rightFrontRotateMotor;
@@ -75,12 +75,16 @@ public class DriveTrain extends Subsystem {
 
 public DriveTrain() {
         rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        rightFrontDriveMotor.setInverted(true);
         rightFrontRotateMotor = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
         leftFrontDriveMotor   = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        leftFrontRotateMotor  = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER, CANSparkMax.MotorType.kBrushless);
+        leftFrontDriveMotor.setInverted(true);
+        leftFrontRotateMotor  = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
         rightBackDriveMotor   = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        rightBackDriveMotor.setInverted(true);
         rightBackRotateMotor  = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
         leftBackDriveMotor    = new CANSparkMax(DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+        leftBackDriveMotor.setInverted(true);
         leftBackRotateMotor   = new CANSparkMax(DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
 
         frontLeftModule = new Mk2SwerveModuleBuilder(
@@ -144,10 +148,10 @@ public DriveTrain() {
         backLeftModule.updateSensors();
         backRightModule.updateSensors();
 
-        SmartDashboard.putNumber("Front Left Module Angle", Math.toDegrees(frontLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Front Right Module Angle", Math.toDegrees(frontRightModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Left Module Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Right Module Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
+        SmartDashboard.putNumber("Front Left Angle", Math.toDegrees(frontLeftModule.getCurrentAngle()));
+        SmartDashboard.putNumber("Front Right Angle", Math.toDegrees(frontRightModule.getCurrentAngle()));
+        SmartDashboard.putNumber("Back Left Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
+        SmartDashboard.putNumber("Back Right Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
 
         //TODO SmartDashboard.putNumber("Gyroscope Angle", gyroscope.getAngle().toDegrees());
 
