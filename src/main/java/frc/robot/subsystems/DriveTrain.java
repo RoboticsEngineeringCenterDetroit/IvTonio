@@ -67,11 +67,6 @@ public class DriveTrain extends Subsystem {
     public CANSparkMax rightBackRotateMotor;
     public CANSparkMax leftBackDriveMotor;
     public CANSparkMax leftBackRotateMotor;
-    private final SwerveModule frontLeftModule;
-    private final SwerveModule frontRightModule;
-    private final SwerveModule backLeftModule;
-    private final SwerveModule backRightModule;
-    private final SwerveDriveKinematics kinematics;
 
 public DriveTrain() {
         rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
@@ -83,45 +78,7 @@ public DriveTrain() {
         leftBackDriveMotor    = new CANSparkMax(DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
         leftBackRotateMotor   = new CANSparkMax(DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
 
-        frontLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(DRIVETRAIN_FRONT_LEFT_ANGLE_ENCODER), FRONT_LEFT_ANGLE_OFFSET)
-            .angleMotor(leftFrontRotateMotor)
-            .driveMotor(leftFrontDriveMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
 
-        frontRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(DRIVETRAIN_FRONT_RIGHT_ANGLE_ENCODER), FRONT_RIGHT_ANGLE_OFFSET)
-            .angleMotor(rightFrontRotateMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(rightFrontDriveMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        backLeftModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(DRIVETRAIN_BACK_LEFT_ANGLE_ENCODER), BACK_LEFT_ANGLE_OFFSET)
-            .angleMotor(leftBackRotateMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(leftBackDriveMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        backRightModule = new Mk2SwerveModuleBuilder(
-            new Vector2(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0))
-            .angleEncoder(new AnalogInput(DRIVETRAIN_BACK_RIGHT_ANGLE_ENCODER), BACK_RIGHT_ANGLE_OFFSET)
-            .angleMotor(rightBackRotateMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .driveMotor(rightBackDriveMotor, Mk2SwerveModuleBuilder.MotorType.NEO)
-            .build();
-
-        frontLeftModule.setName("Front Left");
-        frontRightModule.setName("Front Right");
-        backLeftModule.setName("Back Left");
-        backRightModule.setName("Back Right");
-
-        kinematics = new SwerveDriveKinematics(
-            new Translation2d(TRACKWIDTH / 2.0, WHEELBASE / 2.0),
-            new Translation2d(TRACKWIDTH / 2.0, -WHEELBASE / 2.0),
-            new Translation2d(-TRACKWIDTH / 2.0, WHEELBASE / 2.0),
-            new Translation2d(-TRACKWIDTH / 2.0, -WHEELBASE / 2.0)
-        );
 
     }
 
@@ -139,22 +96,7 @@ public DriveTrain() {
 
     @Override
     public void periodic() {
-        frontLeftModule.updateSensors();
-        frontRightModule.updateSensors();
-        backLeftModule.updateSensors();
-        backRightModule.updateSensors();
 
-        SmartDashboard.putNumber("Front Left Module Angle", Math.toDegrees(frontLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Front Right Module Angle", Math.toDegrees(frontRightModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Left Module Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Right Module Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
-
-        //TODO SmartDashboard.putNumber("Gyroscope Angle", gyroscope.getAngle().toDegrees());
-
-        frontLeftModule.updateState(TimedRobot.kDefaultPeriod);
-        frontRightModule.updateState(TimedRobot.kDefaultPeriod);
-        backLeftModule.updateState(TimedRobot.kDefaultPeriod);
-        backRightModule.updateState(TimedRobot.kDefaultPeriod);
 
     }
 
@@ -166,22 +108,5 @@ public DriveTrain() {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
-    public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
-        rotation *= 2.0 / Math.hypot(WHEELBASE, TRACKWIDTH);
-        ChassisSpeeds speeds;
-        // if (fieldOriented) {
-        //     speeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-        //          Rotation2d.fromDegrees(gyroscope.getAngle().toDegrees()));
-        // } else {
-        //     speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-        // }
-            speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
-
-        SwerveModuleState[] states = kinematics.toSwerveModuleStates(speeds);
-        frontLeftModule.setTargetVelocity(states[0].speedMetersPerSecond, states[0].angle.getRadians());
-        frontRightModule.setTargetVelocity(states[1].speedMetersPerSecond, states[1].angle.getRadians());
-        backLeftModule.setTargetVelocity(states[2].speedMetersPerSecond, states[2].angle.getRadians());
-        backRightModule.setTargetVelocity(states[3].speedMetersPerSecond, states[3].angle.getRadians());
-    }
 }
 

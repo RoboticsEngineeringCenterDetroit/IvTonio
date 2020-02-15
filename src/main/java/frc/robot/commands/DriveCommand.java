@@ -13,22 +13,20 @@ public class DriveCommand extends Command {
 
     @Override
     protected void execute() {
-        double forward = -Robot.oi.driveController.getRawAxis(1);
-        forward = Utilities.deadband(forward);
-        // Square the forward stick
-        forward = Math.copySign(Math.pow(forward, 2.0), forward);
 
-        double strafe = -Robot.oi.driveController.getRawAxis(0);
-        strafe = Utilities.deadband(strafe);
-        // Square the strafe stick
-        strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
+        double drive = Robot.oi.driveController.getRawAxis(1);
+        double rotate = Robot.oi.driveController.getRawAxis(4);
 
-        double rotation = -Robot.oi.driveController.getRawAxis(4);
-        rotation = Utilities.deadband(rotation);
-        // Square the rotation stick
-        rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
+        Robot.driveTrain.leftFrontDriveMotor.set(drive);
+        Robot.driveTrain.leftFrontRotateMotor.set(rotate);
+        Robot.driveTrain.rightFrontDriveMotor.set(drive);
+        Robot.driveTrain.rightFrontRotateMotor.set(rotate);
+        Robot.driveTrain.leftBackDriveMotor.set(drive);
+        Robot.driveTrain.leftBackRotateMotor.set(rotate);
+        Robot.driveTrain.rightBackDriveMotor.set(drive);
+        Robot.driveTrain.rightBackRotateMotor.set(rotate);
+        
 
-        Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
     }
 
     @Override
