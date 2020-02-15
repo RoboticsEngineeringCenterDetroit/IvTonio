@@ -29,6 +29,12 @@ public class DriveCommand extends Command {
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
         Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
+
+        double shooterSpeed;
+
+        shooterSpeed = Robot.oi.shooterController.getRawAxis(3);
+        Robot.shooter.setSpeed(shooterSpeed);
+
     }
 
     @Override
