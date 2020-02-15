@@ -121,5 +121,7 @@ public static Shooter shooter;
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        SmartDashboard.putNumber("Shooter RPM", shooter.getRpm());
     }
 }

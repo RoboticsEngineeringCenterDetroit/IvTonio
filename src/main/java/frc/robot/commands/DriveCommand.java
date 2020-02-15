@@ -3,6 +3,8 @@ package frc.robot.commands;
 import frc.robot.Robot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.frcteam2910.common.robot.Utilities;
 
 public class DriveCommand extends Command {
@@ -30,11 +32,7 @@ public class DriveCommand extends Command {
 
         Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
 
-        double shooterSpeed;
-
-        shooterSpeed = Robot.oi.shooterController.getRawAxis(3);
-        Robot.shooter.setSpeed(shooterSpeed);
-
+        SmartDashboard.putNumber("RPM", Robot.shooter.getRpm());
     }
 
     @Override
