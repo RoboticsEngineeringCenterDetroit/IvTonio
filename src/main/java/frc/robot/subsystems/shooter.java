@@ -10,39 +10,50 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 public class Shooter extends SubsystemBase {
 
   private ShuffleboardTab tab;
   private NetworkTableEntry rpmSetpointEntry;
   private NetworkTableEntry rpmEntry;
-  private Double rpmSetpoint = 0.0;
+  private Double rpmSetpoint;
 
   private final int SHOOTER_MOTOR_CAN_ID = 15;
+  private final int FEED_MOTOR_CAN_ID = 12;
+
+
+  public static final double DEFAULT_RPM = 0.0;
+  public static final double MAX_RPM = 6300.0;
+
   /**
    * Creates a new shooter.
    */
 
   TalonFX shooterMotor;
+  TalonSRX feedMotor;
 
   public Shooter() {
     shooterMotor = new TalonFX(SHOOTER_MOTOR_CAN_ID);
-   shooterMotor.setNeutralMode(NeutralMode.Coast);
+    shooterMotor.setNeutralMode(NeutralMode.Coast);
+
+    feedMotor = new TalonSRX(FEED_MOTOR_CAN_ID);
 
     tab = Shuffleboard.getTab("Shooter");
     rpmSetpointEntry = tab.add("RPM setpoint", 0).getEntry();
     rpmEntry = tab.add("RPM", 0).getEntry();
+
+    rpmSetpoint = DEFAULT_RPM;
   }
 
   public Double getRpm() {
     int countsPerHundredMs = shooterMotor.getSelectedSensorVelocity();
-
     Double rpm = countsPerHundredMs * 60000.0 / (100 * 2048);
 
     return rpm;
@@ -51,10 +62,15 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+
+    //rpmSetpoint = MAX_RPM * Robot.oi.shooterController.getRawAxis(3);
+    feedMotor.set(ControlMode.PercentOutput, Robot.oi.shooterController.getRawAxis(2));
+
     rpmSetpoint = rpmSetpointEntry.getDouble(0.0);
     setRpm(rpmSetpoint);
 
-    rpmEntry.setDouble(getRpm());
+    rpmEntry.setDouble(this.getRpm());
   }
 
   public void setRpm(double rpm) {
@@ -68,5 +84,9 @@ public class Shooter extends SubsystemBase {
   public void setSpeed(double speed) {
 
     shooterMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  public void setFeedSpeed(double speed) {
+    feedMotor.set(ControlMode.PercentOutput, speed);
   }
 }

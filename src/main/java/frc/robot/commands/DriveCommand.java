@@ -32,7 +32,6 @@ public class DriveCommand extends Command {
 
         Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
 
-        SmartDashboard.putNumber("RPM", Robot.shooter.getRpm());
     }
 
     @Override
