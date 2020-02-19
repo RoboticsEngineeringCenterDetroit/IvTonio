@@ -11,11 +11,12 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 
 
-public class Intake extends SubsystemBase {
+public class Intake extends Subsystem {
   /**
    * Creates a new Intake.
    */
@@ -43,7 +44,13 @@ public class Intake extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
 
+    //TODO move this dumb control code into a proper command
     double inSpeed = Robot.oi.shooterController.getRawAxis(1);
     setIntakeSpeed(inSpeed);
+  }
+
+  @Override
+  protected void initDefaultCommand() {
+    // TODO Auto-generated method stub    
   }
 }

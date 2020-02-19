@@ -15,10 +15,12 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
+import frc.robot.commands.ManualShooterCommand;
+import edu.wpi.first.wpiutil.math.*;
 
-public class Shooter extends SubsystemBase {
+public class Shooter extends Subsystem {
 
   private ShuffleboardTab tab;
   private NetworkTableEntry rpmSetpointEntry;
@@ -27,7 +29,6 @@ public class Shooter extends SubsystemBase {
 
   private final int SHOOTER_MOTOR_CAN_ID = 15;
   private final int FEED_MOTOR_CAN_ID = 12;
-
 
   public static final double DEFAULT_RPM = 0.0;
   public static final double MAX_RPM = 6300.0;
@@ -40,6 +41,7 @@ public class Shooter extends SubsystemBase {
   TalonSRX feedMotor;
 
   public Shooter() {
+    
     shooterMotor = new TalonFX(SHOOTER_MOTOR_CAN_ID);
     shooterMotor.setNeutralMode(NeutralMode.Coast);
 
@@ -67,13 +69,12 @@ public class Shooter extends SubsystemBase {
     //rpmSetpoint = MAX_RPM * Robot.oi.shooterController.getRawAxis(3);
     feedMotor.set(ControlMode.PercentOutput, Robot.oi.shooterController.getRawAxis(2));
 
-    rpmSetpoint = rpmSetpointEntry.getDouble(0.0);
-    setRpm(rpmSetpoint);
+    setMotor(rpmSetpoint);
 
     rpmEntry.setDouble(this.getRpm());
   }
 
-  public void setRpm(double rpm) {
+  public void setMotor(double rpm) {
 
     double velocity = (rpm * 100.0 * 2048.0 )/ 60000.0;
 
@@ -81,12 +82,21 @@ public class Shooter extends SubsystemBase {
     System.out.println("shooter velocity = " + velocity);
   }
 
-  public void setSpeed(double speed) {
+  public double getRpmSetpoint() {
+    return rpmSetpoint;
+  }
 
-    shooterMotor.set(ControlMode.PercentOutput, speed);
+  public void setRpm(double rpm)
+  {
+    rpmSetpoint = MathUtil.clamp(rpm, 0.0, MAX_RPM);
   }
 
   public void setFeedSpeed(double speed) {
     feedMotor.set(ControlMode.PercentOutput, speed);
+  }
+
+  @Override
+  public void initDefaultCommand() {
+    setDefaultCommand(new ManualShooterCommand());
   }
 }
