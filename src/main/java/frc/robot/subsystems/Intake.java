@@ -10,6 +10,9 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+
+import org.frcteam2910.common.robot.Utilities;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -21,22 +24,23 @@ public class Intake extends Subsystem {
    * Creates a new Intake.
    */
 
-  public static final int LEFT_INTAKE_CAN_ID  = 9;
-  public static final int RIGHT_INTAKE_CAN_ID = 10;
+  public static final int LEFT_INTAKE_CAN_ID  = 12;
+  public static final int RIGHT_INTAKE_CAN_ID = 13;
   
-  TalonSRX leftIntakeMotor, rightIntakeMotor;
+  VictorSPX leftIntakeMotor, rightIntakeMotor;
 
   public Intake() {
-    leftIntakeMotor = new TalonSRX(LEFT_INTAKE_CAN_ID);
-    rightIntakeMotor = new TalonSRX(RIGHT_INTAKE_CAN_ID);
+    leftIntakeMotor = new VictorSPX(LEFT_INTAKE_CAN_ID);
+    rightIntakeMotor = new VictorSPX(RIGHT_INTAKE_CAN_ID);
     leftIntakeMotor.setNeutralMode(NeutralMode.Coast);
     rightIntakeMotor.setNeutralMode(NeutralMode.Coast);
   }
 
 
   public void setIntakeSpeed(double speed) {
+    speed = Utilities.deadband(speed);
     leftIntakeMotor.set(ControlMode.PercentOutput, speed);
-    rightIntakeMotor.set(ControlMode.PercentOutput, speed);
+    rightIntakeMotor.set(ControlMode.PercentOutput, -speed);
   }
 
 

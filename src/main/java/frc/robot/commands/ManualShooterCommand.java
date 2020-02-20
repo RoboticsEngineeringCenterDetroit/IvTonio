@@ -7,6 +7,8 @@
 
 package frc.robot.commands;
 
+import org.frcteam2910.common.robot.Utilities;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 
@@ -28,16 +30,19 @@ public class ManualShooterCommand extends Command {
   @Override
   public void execute() {
 
-    double setpoint = Robot.shooter.getRpmSetpoint();
+    double setpoint;
 
-    if(Robot.oi.shooterController.getPOV() == 0) {
-      setpoint += 500;
-    } else if(Robot.oi.shooterController.getPOV() == 180) {
-      setpoint -= 500;
-    }
+    // if(Robot.oi.shooterController.getPOV() == 0) {
+    //   setpoint += 500;
+    // } else if(Robot.oi.shooterController.getPOV() == 180) {
+    //   setpoint -= 500;
+    // }
 
-    Robot.shooter.setRpm(setpoint);
+    setpoint = Robot.oi.shooterController.getRawAxis(3);
+    Robot.shooter.setMotor(setpoint);
 
+    double feedspeed = Utilities.deadband(Robot.oi.shooterController.getRawAxis(2));
+    Robot.shooter.setFeedSpeed(feedspeed);
   }
 
   

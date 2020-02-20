@@ -11,10 +11,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.Robot;
 import frc.robot.commands.ManualShooterCommand;
@@ -28,7 +32,7 @@ public class Shooter extends Subsystem {
   private Double rpmSetpoint;
 
   private final int SHOOTER_MOTOR_CAN_ID = 15;
-  private final int FEED_MOTOR_CAN_ID = 12;
+  private final int FEED_MOTOR_CAN_ID = 8;
 
   public static final double DEFAULT_RPM = 0.0;
   public static final double MAX_RPM = 6300.0;
@@ -38,20 +42,24 @@ public class Shooter extends Subsystem {
    */
 
   TalonFX shooterMotor;
-  TalonSRX feedMotor;
+  CANSparkMax feedMotor;
+  DigitalInput feedTriggerSwitch;
 
   public Shooter() {
     
     shooterMotor = new TalonFX(SHOOTER_MOTOR_CAN_ID);
     shooterMotor.setNeutralMode(NeutralMode.Coast);
 
-    feedMotor = new TalonSRX(FEED_MOTOR_CAN_ID);
+    feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
+    shooterMotor.setNeutralMode(NeutralMode.Brake);
 
     tab = Shuffleboard.getTab("Shooter");
     rpmSetpointEntry = tab.add("RPM setpoint", 0).getEntry();
     rpmEntry = tab.add("RPM", 0).getEntry();
 
     rpmSetpoint = DEFAULT_RPM;
+
+    feedTriggerSwitch = new DigitalInput(0);
   }
 
   public Double getRpm() {
@@ -64,12 +72,7 @@ public class Shooter extends Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
-
-    //rpmSetpoint = MAX_RPM * Robot.oi.shooterController.getRawAxis(3);
-    feedMotor.set(ControlMode.PercentOutput, Robot.oi.shooterController.getRawAxis(2));
-
-    setMotor(rpmSetpoint);
+    SmartDashboard.putBoolean("Ball Loaded", feedTriggerSwitch.get());
 
     rpmEntry.setDouble(this.getRpm());
   }
@@ -79,20 +82,12 @@ public class Shooter extends Subsystem {
     double velocity = (rpm * 100.0 * 2048.0 )/ 60000.0;
 
     shooterMotor.set(ControlMode.Velocity, velocity);
-    System.out.println("shooter velocity = " + velocity);
+    //System.out.println("shooter velocity = " + velocity);
   }
 
-  public double getRpmSetpoint() {
-    return rpmSetpoint;
-  }
-
-  public void setRpm(double rpm)
-  {
-    rpmSetpoint = MathUtil.clamp(rpm, 0.0, MAX_RPM);
-  }
 
   public void setFeedSpeed(double speed) {
-    feedMotor.set(ControlMode.PercentOutput, speed);
+    feedMotor.set(speed);
   }
 
   @Override

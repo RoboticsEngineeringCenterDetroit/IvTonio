@@ -30,7 +30,11 @@ public class DriveCommand extends Command {
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
-        Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, false);
+        boolean fieldOrientedFlag;
+
+        fieldOrientedFlag = Robot.oi.driveController.getAButtonPressed();
+
+        Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, fieldOrientedFlag);
 
     }
 
