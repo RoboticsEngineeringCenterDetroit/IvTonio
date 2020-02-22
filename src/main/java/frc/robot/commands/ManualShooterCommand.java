@@ -10,12 +10,18 @@ package frc.robot.commands;
 import org.frcteam2910.common.robot.Utilities;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.robot.Robot;
+import frc.robot.subsystems.Shooter;
 
 public class ManualShooterCommand extends Command {
   /**
    * Creates a new ManualShooterCommand.
    */
+
+  double pctSetpoint = 0.0;
+
   public ManualShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
     requires(Robot.shooter);
@@ -30,18 +36,20 @@ public class ManualShooterCommand extends Command {
   @Override
   public void execute() {
 
-    double setpoint;
+    if(Robot.oi.shooterController.getPOV() == 0) {
+      pctSetpoint += 0.05;
+    } else if(Robot.oi.shooterController.getPOV() == 180) {
+      pctSetpoint -= 0.05;
+    }
 
-    // if(Robot.oi.shooterController.getPOV() == 0) {
-    //   setpoint += 500;
-    // } else if(Robot.oi.shooterController.getPOV() == 180) {
-    //   setpoint -= 500;
-    // }
+    pctSetpoint = MathUtil.clamp(pctSetpoint, 0.0, 1.0);
+    Robot.shooter.setMotorPercent(pctSetpoint);
+    SmartDashboard.putNumber("Shooter Setpoint", pctSetpoint);
+    // setpoint = Robot.oi.shooterController.getRawAxis(3);
+    // setpoint *= Shooter.MAX_VEL;
+    // Robot.shooter.setMotorVelocity(setpoint);
 
-    setpoint = Robot.oi.shooterController.getRawAxis(3);
-    Robot.shooter.setMotor(setpoint);
-
-    double feedspeed = Utilities.deadband(Robot.oi.shooterController.getRawAxis(2));
+    double feedspeed = Utilities.deadband(Robot.oi.shooterController.getRawAxis(2), 0.10);
     Robot.shooter.setFeedSpeed(feedspeed);
   }
 

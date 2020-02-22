@@ -38,7 +38,7 @@ public class Intake extends Subsystem {
 
 
   public void setIntakeSpeed(double speed) {
-    speed = Utilities.deadband(speed);
+    speed = Utilities.deadband(speed, 0.10);
     leftIntakeMotor.set(ControlMode.PercentOutput, speed);
     rightIntakeMotor.set(ControlMode.PercentOutput, -speed);
   }

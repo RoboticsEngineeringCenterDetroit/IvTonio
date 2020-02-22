@@ -97,6 +97,7 @@ public static Intake intake;
 
     @Override
     public void autonomousInit() {
+        driveTrain.resetYaw();
         autonomousCommand = chooser.getSelected();
         // schedule the autonomous command (example)
         if (autonomousCommand != null) autonomousCommand.start();
@@ -117,6 +118,8 @@ public static Intake intake;
         // continue until interrupted by another command, remove
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
+
+        driveTrain.resetYaw(); //TODO TAKE THIS OUT FOR GOD'S SAKE
     }
 
     /**

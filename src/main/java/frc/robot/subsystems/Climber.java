@@ -11,6 +11,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.ClimbCommand;
 
 public class Climber extends Subsystem {
@@ -32,6 +33,8 @@ public class Climber extends Subsystem {
 
   public void climb(double speed) {
     climberMotor.set(ControlMode.PercentOutput, speed);
+    SmartDashboard.putNumber("Climber", speed);
+    
   }
 
   @Override

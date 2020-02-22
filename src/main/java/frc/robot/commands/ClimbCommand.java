@@ -8,10 +8,11 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ClimbCommand extends Command {
-  private static final double CLIMB_SPEED = 1.0;
+  private static final double CLIMB_SPEED = 0.8;
 
   /**
    * Creates a new ClimbCommand.
@@ -29,11 +30,15 @@ public class ClimbCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if(Robot.oi.shooterController.getRawButtonPressed(5)) {
+
+    if(Robot.oi.shooterController.getRawButton(5)) {
+      SmartDashboard.putString("ClimbState", "UP");
       Robot.climber.climb(CLIMB_SPEED);
-    } else if(Robot.oi.shooterController.getRawButtonPressed(6)){
+    } else if(Robot.oi.shooterController.getRawButton(6)){
+      SmartDashboard.putString("ClimbState", "DOWN");
       Robot.climber.climb(-CLIMB_SPEED);
     } else {
+      SmartDashboard.putString("ClimbState", "STOP");
       Robot.climber.climb(0);
     }
   }

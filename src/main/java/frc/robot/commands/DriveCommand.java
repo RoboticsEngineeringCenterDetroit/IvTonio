@@ -32,7 +32,7 @@ public class DriveCommand extends Command {
 
         boolean fieldOrientedFlag;
 
-        fieldOrientedFlag = Robot.oi.driveController.getAButtonPressed();
+        fieldOrientedFlag = !Robot.oi.driveController.getRawButton(6);
 
         Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, fieldOrientedFlag);
 

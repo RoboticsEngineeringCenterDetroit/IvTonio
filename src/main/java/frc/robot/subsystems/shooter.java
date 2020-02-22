@@ -26,16 +26,14 @@ import edu.wpi.first.wpiutil.math.*;
 
 public class Shooter extends Subsystem {
 
-  private ShuffleboardTab tab;
-  private NetworkTableEntry rpmSetpointEntry;
-  private NetworkTableEntry rpmEntry;
   private Double rpmSetpoint;
 
   private final int SHOOTER_MOTOR_CAN_ID = 15;
   private final int FEED_MOTOR_CAN_ID = 8;
 
   public static final double DEFAULT_RPM = 0.0;
-  public static final double MAX_RPM = 6300.0;
+  public static final double MAX_RPM = 6400.0;
+  public static final double MAX_VEL = 22000.0;
 
   /**
    * Creates a new shooter.
@@ -53,10 +51,6 @@ public class Shooter extends Subsystem {
     feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
     shooterMotor.setNeutralMode(NeutralMode.Brake);
 
-    tab = Shuffleboard.getTab("Shooter");
-    rpmSetpointEntry = tab.add("RPM setpoint", 0).getEntry();
-    rpmEntry = tab.add("RPM", 0).getEntry();
-
     rpmSetpoint = DEFAULT_RPM;
 
     feedTriggerSwitch = new DigitalInput(0);
@@ -72,12 +66,12 @@ public class Shooter extends Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Ball Loaded", feedTriggerSwitch.get());
-
-    rpmEntry.setDouble(this.getRpm());
+    SmartDashboard.putBoolean("Ball Loaded", !feedTriggerSwitch.get());
+    SmartDashboard.putNumber("Shooter RPM", getRpm());
+    SmartDashboard.putNumber("Shooter VEL", shooterMotor.getSelectedSensorVelocity());
   }
 
-  public void setMotor(double rpm) {
+  public void setMotorRPM(double rpm) {
 
     double velocity = (rpm * 100.0 * 2048.0 )/ 60000.0;
 
@@ -85,6 +79,13 @@ public class Shooter extends Subsystem {
     //System.out.println("shooter velocity = " + velocity);
   }
 
+  public void setMotorPercent(double value) {
+    shooterMotor.set(ControlMode.PercentOutput, value);
+  }
+
+  public void setMotorVelocity(double vel) {
+    shooterMotor.set(ControlMode.Velocity, vel);
+  }
 
   public void setFeedSpeed(double speed) {
     feedMotor.set(speed);

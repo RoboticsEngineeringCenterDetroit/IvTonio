@@ -134,8 +134,11 @@ public DriveTrain() {
         );
 
         navx = new AHRS(I2C.Port.kOnboard);
-        System.out.println("NAVX is connected? == " + navx.isConnected());
         //TODO do we need to invert the gyro value?
+    }
+
+    public void resetYaw() {
+        navx.reset();
     }
 
     @Override
@@ -185,7 +188,7 @@ public DriveTrain() {
         SmartDashboard.putBoolean("Field-Oriented", fieldOriented);
          if (fieldOriented) {
              speeds = ChassisSpeeds.fromFieldRelativeSpeeds(translation.getX(), translation.getY(), rotation,
-                  Rotation2d.fromDegrees(navx.getAngle()));
+                  Rotation2d.fromDegrees(-navx.getAngle()));
         } else {
              speeds = new ChassisSpeeds(translation.getX(), translation.getY(), rotation);
          }
