@@ -80,18 +80,22 @@ public class DriveTrain extends Subsystem {
 
 
 public DriveTrain() {
-        rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        rightFrontDriveMotor.setInverted(true);
-        rightFrontRotateMotor = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        leftFrontDriveMotor   = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        leftFrontDriveMotor.setInverted(true);
-        leftFrontRotateMotor  = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        rightBackDriveMotor   = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        rightBackDriveMotor.setInverted(true);
-        rightBackRotateMotor  = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        leftBackDriveMotor    = new CANSparkMax(DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
-        leftBackDriveMotor.setInverted(true);
-        leftBackRotateMotor   = new CANSparkMax(DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    rightFrontDriveMotor.setInverted(true);
+    rightFrontDriveMotor.setSmartCurrentLimit(40);
+    rightFrontRotateMotor = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    leftFrontDriveMotor   = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    leftFrontDriveMotor.setInverted(true);
+    leftFrontDriveMotor.setSmartCurrentLimit(40);
+    leftFrontRotateMotor  = new CANSparkMax(DRIVETRAIN_FRONT_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    rightBackDriveMotor   = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    rightBackDriveMotor.setInverted(true);
+    rightBackDriveMotor.setSmartCurrentLimit(40);
+    rightBackRotateMotor  = new CANSparkMax(DRIVETRAIN_BACK_RIGHT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    leftBackDriveMotor    = new CANSparkMax(DRIVETRAIN_BACK_LEFT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
+    leftBackDriveMotor.setInverted(true);
+    leftBackDriveMotor.setSmartCurrentLimit(40);
+    leftBackRotateMotor   = new CANSparkMax(DRIVETRAIN_BACK_LEFT_ANGLE_MOTOR, CANSparkMax.MotorType.kBrushless);
 
         frontLeftModule = new Mk2SwerveModuleBuilder(
             new Vector2(TRACKWIDTH / 2.0, WHEELBASE / 2.0))
