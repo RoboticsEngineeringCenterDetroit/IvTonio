@@ -12,6 +12,7 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.networktables.NetworkTableEntry;
@@ -49,7 +50,7 @@ public class Shooter extends Subsystem {
     shooterMotor.setNeutralMode(NeutralMode.Coast);
 
     feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
-    shooterMotor.setNeutralMode(NeutralMode.Brake);
+    feedMotor.setIdleMode(IdleMode.kBrake);
 
     rpmSetpoint = DEFAULT_RPM;
 
@@ -66,9 +67,13 @@ public class Shooter extends Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putBoolean("Ball Loaded", !feedTriggerSwitch.get());
+    SmartDashboard.putBoolean("Ball Ready", ballReady());
     SmartDashboard.putNumber("Shooter RPM", getRpm());
     SmartDashboard.putNumber("Shooter VEL", shooterMotor.getSelectedSensorVelocity());
+  }
+
+  public boolean ballReady() {
+    return !feedTriggerSwitch.get();
   }
 
   public void setMotorRPM(double rpm) {
