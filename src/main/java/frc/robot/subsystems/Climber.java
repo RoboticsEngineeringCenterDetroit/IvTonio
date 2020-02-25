@@ -29,6 +29,7 @@ public class Climber extends Subsystem {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Climb Current", climberMotor.getSupplyCurrent());
   }
 
   public void climb(double speed) {

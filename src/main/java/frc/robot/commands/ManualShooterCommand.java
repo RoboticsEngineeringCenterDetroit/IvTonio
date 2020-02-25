@@ -37,19 +37,23 @@ public class ManualShooterCommand extends Command {
   public void execute() {
 
     if(Robot.oi.shooterController.getPOV() == 0) {
-      pctSetpoint += 0.05;
+      pctSetpoint += 0.025;
     } else if(Robot.oi.shooterController.getPOV() == 180) {
-      pctSetpoint -= 0.05;
+      pctSetpoint -= 0.025;
     }
 
     pctSetpoint = MathUtil.clamp(pctSetpoint, 0.0, 1.0);
     Robot.shooter.setMotorPercent(pctSetpoint);
     SmartDashboard.putNumber("Shooter Setpoint", pctSetpoint);
-    // setpoint = Robot.oi.shooterController.getRawAxis(3);
-    // setpoint *= Shooter.MAX_VEL;
-    // Robot.shooter.setMotorVelocity(setpoint);
 
-    double feedspeed = Utilities.deadband(Robot.oi.shooterController.getRawAxis(2), 0.10);
+    double feedspeed;
+    if(Robot.shooter.ballReady()) {
+      feedspeed = Robot.oi.shooterController.getRawAxis(3);
+    } else {
+      feedspeed = Robot.oi.shooterController.getRawAxis(2);
+    }
+    
+    feedspeed = Utilities.deadband(feedspeed, 0.10);
     Robot.shooter.setFeedSpeed(feedspeed);
   }
 
