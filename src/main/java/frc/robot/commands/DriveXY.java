@@ -17,7 +17,10 @@ import frc.robot.Robot;
 
 public class DriveXY extends Command {
 
-  public static final double TARGET_TOLERANCE = 0.05;
+  public static final double TARGET_TOLERANCE = 5.0;
+  public static final double RAMP_UP_TIME = 1.0;
+  public static final double RAMP_DOWN_DISTANCE = 30;
+
   Pose2d target;
   Transform2d delta;
   long startTimeMicroSeconds;
@@ -37,10 +40,15 @@ public class DriveXY extends Command {
     target = new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(angleDegrees));
   }
 
+  
+
   // Called just before this Command runs the first time
   @Override
   protected void initialize() {
     startTimeMicroSeconds = RobotController.getFPGATime();
+    System.out.println("Starting Drive command:");
+    System.out.println("from:" + Robot.driveTrain.getPose().toString());
+    System.out.println("to:" + target.toString());
   }
 
   public double getElapsedTime() {
@@ -56,19 +64,21 @@ public class DriveXY extends Command {
     double scale = 1.0;
     double dx = getDistanceToTarget();
     double time = getElapsedTime();
+    double heading = target.getRotation().getDegrees();
 
-    if(dx < 1.0) {
-      scale = dx/1.0;
+    if(dx < RAMP_DOWN_DISTANCE) {
+      scale = dx / RAMP_DOWN_DISTANCE;
     }
 
-    if(time < 1.0)
+    if(time < RAMP_UP_TIME)
     {
-      scale = time/1.0;
+      scale = time / RAMP_UP_TIME;
     }
 
     translation = translation.times(scale);
 
-    Robot.driveTrain.drive(translation, 0.0, true);
+    //System.out.println("driving: " + translation.toString() + " heading: " + heading);
+    Robot.driveTrain.driveHeading(translation, heading);
   }
 
 
@@ -82,6 +92,7 @@ public class DriveXY extends Command {
   @Override
   protected void end() {
     Robot.driveTrain.stop();
+    System.out.println("finished move in " + getElapsedTime() + "seconds");
   }
 
   // Called when another command which requires one or more of the same
@@ -89,5 +100,6 @@ public class DriveXY extends Command {
   @Override
   protected void interrupted() {
     Robot.driveTrain.stop();
+    System.out.println("interrupted move after" + getElapsedTime() + "seconds");
   }
 }

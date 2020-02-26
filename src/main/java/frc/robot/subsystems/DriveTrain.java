@@ -66,6 +66,9 @@ public class DriveTrain extends Subsystem {
     private static final double BACK_LEFT_ANGLE_OFFSET = -Math.toRadians(202.9);
     private static final double BACK_RIGHT_ANGLE_OFFSET = -Math.toRadians(138.2);
 
+    private static final double kPgain = 0.040;
+    private static final double kDgain = 0.0;
+
     public CANSparkMax rightFrontDriveMotor;
     public CANSparkMax rightFrontRotateMotor;
     public CANSparkMax leftFrontDriveMotor;
@@ -201,6 +204,16 @@ public DriveTrain() {
     }
 
 
+    public void driveHeading(Translation2d translation, double heading) {
+
+        double angle = getAngle();
+		double currentAngularRate = getAngularRate();
+		double angle_error = angleDelta(heading, angle);
+		double yawCommand = - angle_error * kPgain - (currentAngularRate) * kDgain;
+
+        drive(translation, yawCommand, true);
+    }
+
     public void drive(Translation2d translation, double rotation, boolean fieldOriented) {
         rotation *= 2.0 / Math.hypot(WHEELBASE, TRACKWIDTH);
         ChassisSpeeds speeds;
@@ -226,12 +239,20 @@ public DriveTrain() {
         backRightModule.setTargetVelocity(0.0, backRightModule.getCurrentAngle());
     }
 
-    private double getAngle() {
+    public double getAngle() {
         return -navx.getAngle();
     }
 
-    public double getDistance() {
-        return METERS_PER_ENCODER_COUNT * rightFrontDriveMotor.getEncoder().getPosition();
+    public double getAngularRate() {
+        return -navx.getRate();
+    }
+
+    static public double angleDelta(double src, double dest) {
+		double delta = (dest - src) % 360.0;
+		if(Math.abs(delta) > 180) {
+			delta = delta - (Math.signum(delta) * 360);
+		}
+		return delta;
     }
 }
 
