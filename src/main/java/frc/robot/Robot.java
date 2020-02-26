@@ -119,7 +119,6 @@ public static Intake intake;
         // this line or comment it out.
         if (autonomousCommand != null) autonomousCommand.cancel();
 
-        driveTrain.resetYaw(); //TODO TAKE THIS OUT FOR GOD'S SAKE
     }
 
     /**
