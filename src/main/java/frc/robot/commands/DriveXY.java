@@ -17,14 +17,14 @@ import frc.robot.Robot;
 
 public class DriveXY extends Command {
 
-  public static final double TARGET_TOLERANCE = 5.0;
-  public static final double RAMP_UP_TIME = 1.0;
-  public static final double RAMP_DOWN_DISTANCE = 30;
+  public static final double TARGET_TOLERANCE = 3.0;
+  public static final double RAMP_UP_TIME = 2.0;
+  public static final double RAMP_DOWN_DISTANCE = 50;
 
   Pose2d target;
   Transform2d delta;
   long startTimeMicroSeconds;
-
+  double speedScale;
 
   public Transform2d getDelta() {
     return target.minus(Robot.driveTrain.getPose());
@@ -34,9 +34,10 @@ public class DriveXY extends Command {
     return getDelta().getTranslation().getNorm();
   }
 
-  public DriveXY(double x, double y, double angleDegrees) {
+  public DriveXY(double x, double y, double angleDegrees, double speed) {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.driveTrain);
+    speedScale = speed;
     target = new Pose2d(new Translation2d(x, y), Rotation2d.fromDegrees(angleDegrees));
   }
 
@@ -61,24 +62,25 @@ public class DriveXY extends Command {
     Translation2d translation = getDelta().getTranslation();
     translation = translation.div(translation.getNorm());
 
-    double scale = 1.0;
+    double scale = speedScale;
     double dx = getDistanceToTarget();
     double time = getElapsedTime();
     double heading = target.getRotation().getDegrees();
 
     if(dx < RAMP_DOWN_DISTANCE) {
-      scale = dx / RAMP_DOWN_DISTANCE;
+      scale = Math.min(speedScale, dx / RAMP_DOWN_DISTANCE);
     }
 
     if(time < RAMP_UP_TIME)
     {
-      scale = time / RAMP_UP_TIME;
+      scale = Math.min(time / RAMP_UP_TIME, scale);
     }
 
     translation = translation.times(scale);
 
     //System.out.println("driving: " + translation.toString() + " heading: " + heading);
-    Robot.driveTrain.driveHeading(translation, heading);
+    //Robot.driveTrain.driveHeading(translation, heading);
+    Robot.driveTrain.drive(translation, 0.0, true);
   }
 
 

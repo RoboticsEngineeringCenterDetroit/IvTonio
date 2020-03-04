@@ -20,6 +20,7 @@ public class ShootBall extends Command {
   @Override
   protected void initialize() {
     Robot.shooter.setFeedSpeed(1.0);
+    System.out.println("Shooting RPM = " + Robot.shooter.getRpm());
   }
 
   // Called repeatedly when this Command is scheduled to run

@@ -14,8 +14,8 @@ public class DriveTriangle extends CommandGroup {
    * Add your docs here.
    */
   public DriveTriangle() {
-    addSequential(new DriveXY(100, 0, 0));
-    addSequential(new DriveXY(100, 100, 0));
-    addSequential(new DriveXY(0, 0, 0));
+    addSequential(new DriveXY(100, 0, 0, 0.5));
+    addSequential(new DriveXY(100, 100, 0, 0.5));
+    addSequential(new DriveXY(0, 0, 0, 0.5));
   }
 }
