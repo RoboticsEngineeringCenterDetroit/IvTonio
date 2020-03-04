@@ -51,6 +51,7 @@ public class Shooter extends Subsystem {
 
     feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
     feedMotor.setIdleMode(IdleMode.kBrake);
+    feedMotor.setSmartCurrentLimit(40);
 
     rpmSetpoint = DEFAULT_RPM;
 

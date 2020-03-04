@@ -20,7 +20,7 @@ public class ManualShooterCommand extends Command {
    * Creates a new ManualShooterCommand.
    */
 
-  double pctSetpoint = 0.0;
+  double rpmSetpoint = 0.0;
 
   public ManualShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -37,14 +37,14 @@ public class ManualShooterCommand extends Command {
   public void execute() {
 
     if(Robot.oi.shooterController.getPOV() == 0) {
-      pctSetpoint += 0.025;
+      rpmSetpoint += 150;
     } else if(Robot.oi.shooterController.getPOV() == 180) {
-      pctSetpoint -= 0.025;
+      rpmSetpoint -= 150;
     }
 
-    pctSetpoint = MathUtil.clamp(pctSetpoint, 0.0, 1.0);
-    Robot.shooter.setMotorPercent(pctSetpoint);
-    SmartDashboard.putNumber("Shooter Setpoint", pctSetpoint);
+    rpmSetpoint = MathUtil.clamp(rpmSetpoint, 0.0, 6000);
+    Robot.shooter.setMotorRPM(rpmSetpoint);
+    SmartDashboard.putNumber("Shooter Setpoint", rpmSetpoint);
 
     double feedspeed;
     if(Robot.shooter.ballReady()) {
