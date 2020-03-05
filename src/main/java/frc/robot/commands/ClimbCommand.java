@@ -12,8 +12,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ClimbCommand extends Command {
-  private static final double CLIMB_SPEED = 1.0;
-  private static final double EXTEND_SPEED = 1.0;
+  private static final double CLIMB_SPEED = 0.1;
+  private static final double EXTEND_SPEED = 0.5;
 
   /**
    * Creates a new ClimbCommand.
@@ -46,7 +46,7 @@ public class ClimbCommand extends Command {
     if(Robot.oi.shooterController.getRawButton(3)) {
       SmartDashboard.putString("ExtendState", "RETRACT");
       Robot.climber.extend(EXTEND_SPEED);
-    } else if(Robot.oi.shooterController.getRawButton(2)){
+    } else if(Robot.oi.shooterController.getRawButton(4)){
       SmartDashboard.putString("ExtendState", "EXTEND");
       Robot.climber.extend(-EXTEND_SPEED);
     } else {
