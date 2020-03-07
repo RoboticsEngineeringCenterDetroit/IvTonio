@@ -18,16 +18,16 @@ public class DriveToWallAndShoot extends CommandGroup {
    * Add your docs here.
    */
   public DriveToWallAndShoot() {
-    addSequential(new SetShooterSpeed(0.925,500));
+    addSequential(new SetShooterSpeed(ManualShooterCommand.NEAR_SETPOINT));
     addSequential(new DriveXY(100, 0, 0, 0.5));
     addSequential(new DriveXY(120, 0, 0, 0.2));
-    addSequential(new SetShooterSpeed(0.925,5500));
+    addSequential(new SetShooterSpeed(ManualShooterCommand.NEAR_SETPOINT));
     addSequential(new LoadBall());
     addSequential(new ShootBall());
-    addSequential(new SetShooterSpeed(0.925, 5500));
+    addSequential(new SetShooterSpeed(ManualShooterCommand.NEAR_SETPOINT));
     addSequential(new LoadBall());
     addSequential(new ShootBall());
-    addSequential(new SetShooterSpeed(0.925, 5500));
+    addSequential(new SetShooterSpeed(ManualShooterCommand.NEAR_SETPOINT));
     addSequential(new LoadBall());
     addSequential(new ShootBall());
     addSequential(new DriveXY(100, 20, 0, 0.3));

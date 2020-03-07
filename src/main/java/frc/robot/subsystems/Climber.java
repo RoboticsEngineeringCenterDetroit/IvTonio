@@ -29,6 +29,7 @@ public class Climber extends Subsystem {
   public Climber() {
     climberMotor = new TalonFX(CLIMBER_CAN_ID);
     extenderMotor = new CANSparkMax(EXTENDER_CAN_ID, MotorType.kBrushless);
+    extenderMotor.setSmartCurrentLimit(40);
   }
 
   @Override
