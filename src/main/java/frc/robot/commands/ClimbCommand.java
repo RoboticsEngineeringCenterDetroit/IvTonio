@@ -46,7 +46,7 @@ public class ClimbCommand extends Command {
     if(Robot.oi.shooterController.getRawButton(3)) {
       SmartDashboard.putString("ExtendState", "RETRACT");
       Robot.climber.extend(EXTEND_SPEED);
-    } else if(Robot.oi.shooterController.getRawButton(2)){
+    } else if(Robot.oi.shooterController.getRawButton(4)){
       SmartDashboard.putString("ExtendState", "EXTEND");
       Robot.climber.extend(-EXTEND_SPEED);
     } else {
