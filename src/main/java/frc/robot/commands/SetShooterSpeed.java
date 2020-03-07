@@ -14,10 +14,11 @@ public class SetShooterSpeed extends Command {
   double setpoint;
   double rpmTarget;
 
-  public SetShooterSpeed(double motorPercent, double minRPM) {
+  public static final double tolerance = 200.0;
+
+  public SetShooterSpeed(double motorRPM) {
     // Use requires() here to declare subsystem dependencies
-    setpoint = motorPercent;
-    rpmTarget = minRPM;
+    setpoint = motorRPM;
     requires(Robot.shooter);
   }
 
@@ -29,13 +30,13 @@ public class SetShooterSpeed extends Command {
   // Called repeatedly when this Command is scheduled to run
   @Override
   protected void execute() {
-    Robot.shooter.setMotorPercent(setpoint);
+    Robot.shooter.setMotorRPM(setpoint);
   }
 
   // Make this return true when this Command no longer needs to run execute()
   @Override
   protected boolean isFinished() {
-    return Robot.shooter.getRpm() >= rpmTarget;
+    return Math.abs(Robot.shooter.getRpm() - setpoint) < tolerance;
   }
 
   // Called once after isFinished returns true

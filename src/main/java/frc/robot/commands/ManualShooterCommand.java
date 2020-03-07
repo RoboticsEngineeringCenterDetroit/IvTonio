@@ -20,9 +20,9 @@ public class ManualShooterCommand extends Command {
    * Creates a new ManualShooterCommand.
    */
 
-  static final double INCREMENT = 100.0;
+  static final double INCREMENT = 25.0;
   static final double NEAR_SETPOINT = 5500.0;
-  static final double FAR_SETPOINT = 4500.0;
+  static final double FAR_SETPOINT = 5300.0;
 
   double rpmSetpoint = 0.0;
 
@@ -52,7 +52,8 @@ public class ManualShooterCommand extends Command {
       rpmSetpoint = FAR_SETPOINT;
     }
 
-    rpmSetpoint = MathUtil.clamp(rpmSetpoint, 0.0, 6000);
+    rpmSetpoint = MathUtil.clamp(rpmSetpoint, 0.0, Shooter.MAX_RPM
+    );
 
     double rpm = Robot.shooter.getRpm();
     double sendValue = MathUtil.clamp(rpmSetpoint, rpm - 500, rpm + 500);

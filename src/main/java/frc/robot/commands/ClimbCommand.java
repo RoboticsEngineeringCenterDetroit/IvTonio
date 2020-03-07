@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Robot;
 
 public class ClimbCommand extends Command {
-  private static final double CLIMB_SPEED = 0.1;
+  private static final double CLIMB_SPEED = 0.7;
   private static final double EXTEND_SPEED = 0.5;
 
   /**
