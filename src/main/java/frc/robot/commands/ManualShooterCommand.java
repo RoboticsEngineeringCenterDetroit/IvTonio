@@ -20,7 +20,11 @@ public class ManualShooterCommand extends Command {
    * Creates a new ManualShooterCommand.
    */
 
-  double pctSetpoint = 0.0;
+  static final double INCREMENT = 100.0;
+  static final double NEAR_SETPOINT = 5500.0;
+  static final double FAR_SETPOINT = 4500.0;
+
+  double rpmSetpoint = 0.0;
 
   public ManualShooterCommand() {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,21 +34,30 @@ public class ManualShooterCommand extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    rpmSetpoint = 0.0;
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
 
-    if(Robot.oi.shooterController.getPOV() == 0) {
-      pctSetpoint += 0.025;
-    } else if(Robot.oi.shooterController.getPOV() == 180) {
-      pctSetpoint -= 0.025;
+    int pov = Robot.oi.shooterController.getPOV();
+    if(pov == 0) {
+      rpmSetpoint += INCREMENT;
+    } else if(pov == 180) {
+      rpmSetpoint -= INCREMENT;
+    } else if(pov == 90) {
+      rpmSetpoint = NEAR_SETPOINT;
+    } else if(pov == 270) {
+      rpmSetpoint = FAR_SETPOINT;
     }
 
-    pctSetpoint = MathUtil.clamp(pctSetpoint, 0.0, 1.0);
-    Robot.shooter.setMotorPercent(pctSetpoint);
-    SmartDashboard.putNumber("Shooter Setpoint", pctSetpoint);
+    rpmSetpoint = MathUtil.clamp(rpmSetpoint, 0.0, 6000);
+
+    double rpm = Robot.shooter.getRpm();
+    double sendValue = MathUtil.clamp(rpmSetpoint, rpm - 500, rpm + 500);
+    Robot.shooter.setMotorRPM(sendValue);
+    SmartDashboard.putNumber("Shooter Setpoint", rpmSetpoint);
 
     double feedspeed;
     if(Robot.shooter.ballReady()) {

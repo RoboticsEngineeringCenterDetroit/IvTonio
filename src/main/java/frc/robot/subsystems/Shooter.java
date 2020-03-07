@@ -10,6 +10,7 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.TalonFXPIDSetConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMax.IdleMode;
@@ -48,9 +49,11 @@ public class Shooter extends Subsystem {
     
     shooterMotor = new TalonFX(SHOOTER_MOTOR_CAN_ID);
     shooterMotor.setNeutralMode(NeutralMode.Coast);
+    //shooterMotor.configurePID(new TalonFXPIDSetConfiguration());
 
     feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
     feedMotor.setIdleMode(IdleMode.kBrake);
+    feedMotor.setSmartCurrentLimit(40);
 
     rpmSetpoint = DEFAULT_RPM;
 
@@ -69,7 +72,7 @@ public class Shooter extends Subsystem {
     // This method will be called once per scheduler run
     SmartDashboard.putBoolean("Ball Ready", ballReady());
     SmartDashboard.putNumber("Shooter RPM", getRpm());
-    SmartDashboard.putNumber("Shooter VEL", shooterMotor.getSelectedSensorVelocity());
+    //SmartDashboard.putNumber("Shooter VEL", shooterMotor.getSelectedSensorVelocity());
   }
 
   public boolean ballReady() {
