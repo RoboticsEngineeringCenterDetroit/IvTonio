@@ -49,8 +49,8 @@ public class Shooter extends Subsystem {
     
     shooterMotor = new TalonFX(SHOOTER_MOTOR_CAN_ID);
     shooterMotor.setNeutralMode(NeutralMode.Coast);
-    //  see: https://github.com/CrossTheRoadElec/Phoenix-Examples-Languages/blob/master/Java%20Talon%20FX%20(Falcon%20500)/VelocityClosedLoop/src/main/java/frc/robot/Robot.java
-    //  _talon.config_kF(Constants.kPIDLoopIdx, Constants.kGains_Velocit.kF, Constants.kTimeoutMs);
+    shooterMotor.config_kF(0, 0.048, 0);
+    shooterMotor.config_kP(0, 0.010, 0);
 
 
     feedMotor = new CANSparkMax(FEED_MOTOR_CAN_ID, MotorType.kBrushless);
