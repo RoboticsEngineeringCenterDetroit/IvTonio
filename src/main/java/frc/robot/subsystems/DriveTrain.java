@@ -12,6 +12,7 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 
+import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -22,6 +23,7 @@ import edu.wpi.first.wpilibj.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.commands.DriveCommand;
 
@@ -88,7 +90,12 @@ public class DriveTrain extends Subsystem {
     
     private SwerveDriveOdometry m_odometry;
 
-public DriveTrain() {
+    private NetworkTableEntry frontLeftEntry = Shuffleboard.getTab("DriveTrain").add("Front Left Angle", 0).getEntry();
+    private NetworkTableEntry frontRightEntry = Shuffleboard.getTab("DriveTrain").add("Front Right Angle", 0).getEntry();
+    private NetworkTableEntry backLeftEntry = Shuffleboard.getTab("DriveTrain").add("Back Left Angle", 0).getEntry();
+    private NetworkTableEntry backRightEntry = Shuffleboard.getTab("DriveTrain").add("Back Right Angle", 0).getEntry();
+
+    public DriveTrain() {
     rightFrontDriveMotor  = new CANSparkMax(DRIVETRAIN_FRONT_RIGHT_DRIVE_MOTOR, CANSparkMax.MotorType.kBrushless);
     rightFrontDriveMotor.setInverted(true);
     rightFrontDriveMotor.setSmartCurrentLimit(60);
@@ -149,6 +156,7 @@ public DriveTrain() {
         navx = new AHRS(I2C.Port.kOnboard);
 
         m_odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(getAngle()));
+
     }
 
     public void setFieldPosition(double xPos, double yPos, double angle) {
@@ -178,10 +186,10 @@ public DriveTrain() {
         backLeftModule.updateSensors();
         backRightModule.updateSensors();
 
-        SmartDashboard.putNumber("Front Left Angle", Math.toDegrees(frontLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Front Right Angle", Math.toDegrees(frontRightModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Left Angle", Math.toDegrees(backLeftModule.getCurrentAngle()));
-        SmartDashboard.putNumber("Back Right Angle", Math.toDegrees(backRightModule.getCurrentAngle()));
+        frontLeftEntry.setDouble(Math.toDegrees(frontLeftModule.getCurrentAngle()));
+        frontRightEntry.setDouble(Math.toDegrees(frontRightModule.getCurrentAngle()));
+        backLeftEntry.setDouble(Math.toDegrees(backLeftModule.getCurrentAngle()));
+        backRightEntry.setDouble(Math.toDegrees(backRightModule.getCurrentAngle()));
 
         SmartDashboard.putNumber("Gyroscope Angle", getAngle());
 

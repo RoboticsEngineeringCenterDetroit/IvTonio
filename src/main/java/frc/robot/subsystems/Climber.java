@@ -19,6 +19,8 @@ import frc.robot.commands.ClimbCommand;
 public class Climber extends Subsystem {
   private static final int CLIMBER_CAN_ID = 14;
   private static final int EXTENDER_CAN_ID = 11;
+
+  private static final double EXTENDER_INCH_PER_COUNT = 1.0;
   /**
    * Creates a new Climber.
    */
@@ -36,6 +38,7 @@ public class Climber extends Subsystem {
   public void periodic() {
     // This method will be called once per scheduler run
     SmartDashboard.putNumber("Climb Current", climberMotor.getSupplyCurrent());
+    SmartDashboard.putNumber("Extender Pos.", getExtenderPosition());
   }
 
   public void climb(double speed) {
@@ -54,5 +57,8 @@ public class Climber extends Subsystem {
     setDefaultCommand(new ClimbCommand());
   }
 
+  public double getExtenderPosition() {
+    return EXTENDER_INCH_PER_COUNT * extenderMotor.getEncoder().getPosition();
+  }
  
 }
