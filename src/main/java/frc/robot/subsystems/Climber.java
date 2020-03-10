@@ -20,7 +20,7 @@ public class Climber extends Subsystem {
   private static final int CLIMBER_CAN_ID = 14;
   private static final int EXTENDER_CAN_ID = 11;
 
-  private static final double EXTENDER_INCH_PER_COUNT = 1.0;
+  private static final double EXTENDER_INCH_PER_COUNT = 0.0543;
   /**
    * Creates a new Climber.
    */

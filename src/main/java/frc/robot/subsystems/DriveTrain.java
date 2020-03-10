@@ -154,6 +154,7 @@ public class DriveTrain extends Subsystem {
         );
 
         navx = new AHRS(I2C.Port.kOnboard);
+        System.out.println("Navx firmware: " + navx.getFirmwareVersion());
 
         m_odometry = new SwerveDriveOdometry(kinematics, Rotation2d.fromDegrees(getAngle()));
 

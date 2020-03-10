@@ -26,13 +26,17 @@ public class DriveCommand extends Command {
         strafe = Math.copySign(Math.pow(strafe, 2.0), strafe);
 
         double rotation = -Robot.oi.driveController.getRawAxis(4);
-        rotation = Utilities.deadband(rotation);
+        rotation = Utilities.deadband(rotation, 0.040);
         // Square the rotation stick
         rotation = Math.copySign(Math.pow(rotation, 2.0), rotation);
 
         boolean fieldOrientedFlag;
 
         fieldOrientedFlag = !Robot.oi.driveController.getRawButton(6);
+
+        if(Robot.oi.driveController.getRawButtonPressed(5)) {
+            Robot.driveTrain.resetYaw();
+        }
 
         Robot.driveTrain.drive(new Translation2d(forward, strafe), rotation, fieldOrientedFlag);
 
